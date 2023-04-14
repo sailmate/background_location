@@ -8,16 +8,35 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.ContentValues
 import android.os.*
+import android.database.sqlite.*
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.common.*
 
+class TrackDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    override fun onCreate(db: SQLiteDatabase) {
+        Log.d("background location","Database on create")
+    }
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        Log.d("background location", "Database on upgrade")
+    }
+    companion object {
+        // If you change the database schema, you must increment the database version.
+        const val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "sailmate_tracks.db"
+    }
+}
+
 class LocationUpdatesService : Service() {
 
     private var forceLocationManager: Boolean = false
+
+    private var dbHelper: TrackDbHelper? = null
 
     override fun onBind(intent: Intent?): IBinder {
         val distanceFilter = intent?.getDoubleExtra("distance_filter", 0.0)
@@ -98,15 +117,16 @@ class LocationUpdatesService : Service() {
     private var mServiceHandler: Handler? = null
 
     override fun onCreate() {
+        dbHelper = TrackDbHelper(applicationContext)
         val googleAPIAvailability = GoogleApiAvailability.getInstance()
             .isGooglePlayServicesAvailable(applicationContext)
-        
+
         isGoogleApiAvailable = googleAPIAvailability == ConnectionResult.SUCCESS
-        
+
 
         if (isGoogleApiAvailable && !this.forceLocationManager) {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            
+
             mFusedLocationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     super.onLocationResult(locationResult)
@@ -200,6 +220,13 @@ class LocationUpdatesService : Service() {
 
     private fun onNewLocation(location: Location) {
         mLocation = location
+        val db = dbHelper?.writableDatabase
+        val values = ContentValues().apply {
+            put("lat", location.getLatitude())
+            put("lon", location.getLongitude())
+            put("speed", location.getSpeed().toDouble())
+        }
+        val newRowId = db?.insert("tracks", null, values)
         val intent = Intent(ACTION_BROADCAST)
         intent.putExtra(EXTRA_LOCATION, location)
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
