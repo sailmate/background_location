@@ -20,11 +20,10 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
         SwiftBackgroundLocationPlugin.locationManager?.delegate = self
         SwiftBackgroundLocationPlugin.locationManager?.requestAlwaysAuthorization()
 
-        SwiftBackgroundLocationPlugin.locationManager?.pausesLocationUpdatesAutomatically = false
-
         SwiftBackgroundLocationPlugin.channel?.invokeMethod("location", arguments: "method")
 
         if (call.method == "start_location_service") {
+            SwiftBackgroundLocationPlugin.locationManager?.pausesLocationUpdatesAutomatically = false
             SwiftBackgroundLocationPlugin.locationManager?.allowsBackgroundLocationUpdates = true
             if #available(iOS 11.0, *) {
                 SwiftBackgroundLocationPlugin.locationManager?.showsBackgroundLocationIndicator = true;
@@ -38,6 +37,7 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
 
             SwiftBackgroundLocationPlugin.locationManager?.startUpdatingLocation()
         } else if (call.method == "stop_location_service") {
+            SwiftBackgroundLocationPlugin.locationManager?.pausesLocationUpdatesAutomatically = true
             SwiftBackgroundLocationPlugin.channel?.invokeMethod("location", arguments: "stop_location_service")
             SwiftBackgroundLocationPlugin.locationManager?.stopUpdatingLocation()
             SwiftBackgroundLocationPlugin.locationManager?.allowsBackgroundLocationUpdates = false
