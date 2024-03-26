@@ -18,7 +18,7 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         SwiftBackgroundLocationPlugin.locationManager = CLLocationManager()
         SwiftBackgroundLocationPlugin.locationManager?.delegate = self
-        SwiftBackgroundLocationPlugin.locationManager?.requestAlwaysAuthorization()
+        SwiftBackgroundLocationPlugin.locationManager?.requestWhenInUseAuthorization()
 
         SwiftBackgroundLocationPlugin.channel?.invokeMethod("location", arguments: "method")
 
