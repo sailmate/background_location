@@ -1,3 +1,13 @@
+### 0.13.0
+
+- Android upgrade and location running indicator [#196](https://github.com/Almoullim/background_location/pull/196)
+
+### 0.12.0
+- Android: Raise notification importance [#163](https://github.com/Almoullim/background_location/issues/167)
+
+### 0.11.8
+- Upgrade gradle (for compatibility) and upgrade location services (fixes crashes) #183
+
 ### 0.9.0
 - Android: Set "exported" manifest setting to false [#163](https://github.com/Almoullim/background_location/pull/163)
 - Fixed an overrides of onRequestPermissionsResult [#151](https://github.com/Almoullim/background_location/pull/151)

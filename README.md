@@ -8,7 +8,7 @@ A Flutter plugin to get location updates in the background for both Android and 
 
 ```yaml
 dependencies:
-  background_location: ^0.9.0
+  background_location: ^0.13.0
 ```
 
 **2:** Install packages from the command line:
@@ -48,8 +48,12 @@ BackgroundLocation.setAndroidConfiguration(1000);
 Start the location service. This will also ask the user for permission if not asked previously by another package.
 
 ```dart
+BackgroundLocation.stopLocationService(); //To ensure that previously started services have been stopped, if desired
 BackgroundLocation.startLocationService();
 ```
+
+> *Note:* There is currently an open issue (#10) where, if the location service is started multiple times, the location callback will get called repeatedly. This can be worked around by calling BackgroundLocation.stopLocationService(); to stop any previous running services (such as from a previous run of the app) before starting a new one.
+
 
 Start location service by specifying `distanceFilter`. Defaults to `0` if not specified
 

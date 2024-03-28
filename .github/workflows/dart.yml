@@ -1,26 +1,33 @@
-name: Publish package to pub.dev
+name: Publish
+
 on:
+  pull_request:
+    branches: [ master ]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
   push:
-    branches:   
-      - master
+    tags: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
-    container:
-      image:  google/dart:latest
+    permissions:
+      id-token: write # Required for authentication using OIDC
+      contents: write
+    defaults:
+      run:
+        working-directory: ./
+      
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup credentials
-      run: | 
-        mkdir -p ~/.pub-cache 
-        cat <<EOF > ~/.pub-cache/credentials.json
-        {
-          "accessToken":"${{ secrets.OAUTH_ACCESS_TOKEN }}",
-          "refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}",
-          "tokenEndpoint":"https://accounts.google.com/o/oauth2/token",
-          "scopes": [ "openid", "https://www.googleapis.com/auth/userinfo.email" ],
-          "expiration": 1570721159347
-        }
-        EOF
-    - name: Publish package
-      run: pub publish -f
+    - name: Clone repository
+      uses: actions/checkout@v3
+      
+    - name: Install Dart
+      uses: dart-lang/setup-dart@v1
+      with:
+        sdk: stable
+        
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2     
+      
+    - name: Publish to pub.dev
+      run: flutter pub publish --force
