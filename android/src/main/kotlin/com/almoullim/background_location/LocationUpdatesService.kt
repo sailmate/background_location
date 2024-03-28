@@ -170,7 +170,7 @@ class LocationUpdatesService : Service() {
 
         val filter = IntentFilter()
         filter.addAction(STOP_SERVICE)
-        registerReceiver(broadcastReceiver, filter)
+        registerReceiver(broadcastReceiver, filter, RECEIVER_EXPORTED)
 
         updateNotification() // to start the foreground service
     }
