@@ -71,7 +71,7 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
                 let speed = Expression<Optional<Double>>(value: Double("speed") ?? 0)
                 print("lat: \(location.coordinate.latitude), lon: \(location.coordinate.longitude), speed: \(location.speed)")
                 print("lat: \(lat), lon: \(lon), speed: \(speed)")
-                let insert = tracks.insert(lat <- location.coordinate.latitude, lon <- location.coordinate.longitude, speed <- location.speed)
+                let insert = tracks.insert(lat <- location.coordinate.latitude, lon <- location.coordinate.longitude, speed <- 0.0)
                 let rowid = try db.run(insert)
             }
             let transformedLocations = locations.map {(location) -> [String : Any] in
