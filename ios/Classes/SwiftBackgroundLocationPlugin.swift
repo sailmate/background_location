@@ -69,6 +69,8 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
                 let lat = Expression<Double>(value: Double("lat") ?? 0)
                 let lon = Expression<Optional<Double>>(value: Double("lon") ?? 0)
                 let speed = Expression<Optional<Double>>(value: Double("speed") ?? 0)
+                print("lat: \(location.coordinate.latitude), lon: \(location.coordinate.longitude), speed: \(location.speed)")
+                print("lat: \(lat), lon: \(lon), speed: \(speed)")
                 let insert = tracks.insert(lat <- location.coordinate.latitude, lon <- location.coordinate.longitude, speed <- location.speed)
                 let rowid = try db.run(insert)
             }
