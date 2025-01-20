@@ -66,9 +66,9 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
 
             let tracks = Table("tracks")
             for location in locations {
-                let lat = Expression<String>("lat")
-                let lon = Expression<String>("lon")
-                let speed = Expression<String>("speed")
+                let lat = Expression<String>(value: "lat")
+                let lon = Expression<String>(value: "lon")
+                let speed = Expression<String>(value: "speed")
                 print("lat: \(location.coordinate.latitude), lon: \(location.coordinate.longitude), speed: \(location.speed)")
                 print("lat: \(lat), lon: \(lon), speed: \(speed)")
                 let insert = tracks.insert(lat <- location.coordinate.latitude, lon <- location.coordinate.longitude, speed <- location.speed)
