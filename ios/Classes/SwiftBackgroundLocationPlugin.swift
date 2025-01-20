@@ -64,9 +64,9 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
         do {
             let db = try Connection(getDocumentsDirectory())
 
-            let latTitle = Expression<String>("lat")
-            let lonTitle = Expression<String>("lon")
-            let speedTitle = Expression<String>("speed")
+            let latTitle = Expression<String>(value: "lat")
+            let lonTitle = Expression<String>(value: "lon")
+            let speedTitle = Expression<String>(value: "speed")
 
             let tracks = Table("tracks")
             for location in locations {
