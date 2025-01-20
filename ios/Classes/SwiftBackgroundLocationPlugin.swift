@@ -70,7 +70,7 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
 
             let tracks = Table("tracks")
 
-            let stmt = try db.prepare("INSERT INTO users (lat, lon, speed) VALUES (?, ?. ?)")
+            let stmt = try db.prepare("INSERT INTO users (lat, lon, speed) VALUES (?, ?, ?)")
 
             for location in locations {
                 //let lat = Expression<Optional<Double>>(value: Double("lat") ?? 0)
