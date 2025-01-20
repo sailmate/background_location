@@ -64,14 +64,17 @@ public class SwiftBackgroundLocationPlugin: NSObject, FlutterPlugin, CLLocationM
         do {
             let db = try Connection(getDocumentsDirectory())
 
+            let latTitle = Expression<String>("lat")
+            let lonTitle = Expression<String>("lon")
+            let speedTitle = Expression<String>("speed")
+
             let tracks = Table("tracks")
             for location in locations {
-                let lat = Expression<Optional<Double>>(value: Double("lat") ?? 0)
-                let lon = Expression<Optional<Double>>(value: Double("lon") ?? 0)
-                let speed = Expression<Optional<Double>>(value: Double("speed") ?? 0)
+                //let lat = Expression<Optional<Double>>(value: Double("lat") ?? 0)
+                //let lon = Expression<Optional<Double>>(value: Double("lon") ?? 0)
+                //let speed = Expression<Optional<Double>>(value: Double("speed") ?? 0)
                 print("lat: \(location.coordinate.latitude), lon: \(location.coordinate.longitude), speed: \(location.speed)")
-                print("lat: \(lat), lon: \(lon), speed: \(speed)")
-                let insert = tracks.insert(lat <- location.coordinate.latitude, lon <- location.coordinate.longitude, speed <- 0.0)
+                let insert = tracks.insert(latTitle <- location.coordinate.latitude, lonTitle <- location.coordinate.longitude, speedTitle <- location.speed)
                 let rowid = try db.run(insert)
             }
             let transformedLocations = locations.map {(location) -> [String : Any] in

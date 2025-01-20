@@ -15,7 +15,7 @@ Flutter background location plugin for Android and iOS
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'SQLite.swift', '0.14.1'
+  s.dependency 'SQLite.swift', '0.15.3'
   s.swift_version = '4.2'
   s.ios.deployment_target = '10.0'
 end
